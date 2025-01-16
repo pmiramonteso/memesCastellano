@@ -1,0 +1,18 @@
+@if(categoria) {
+    <div class="votaciones-container">
+    <h2>Memes en la categoría: {{ categoria }}</h2>
+    @for(meme of memes; track meme.id) {
+    <div class="meme-card">
+      <h3>{{ meme.titulo }}</h3>
+      <img [src]="meme.imagen" alt="{{ meme.titulo }}">
+      <p>{{ meme.descripcion }}</p>
+      <div class="votos">
+        <button (click)="votarMeme(meme.id, 'me_gusta')">👍 Me gusta</button>
+        <button (click)="votarMeme(meme.id, 'no_me_gusta')">👎 No me gusta</button>
+        <button (click)="votarMeme(meme.id, 'me_encanta')">❤️ Me encanta</button>
+      </div>
+    </div>
+}
+  </div>
+}
+  

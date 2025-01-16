@@ -1,0 +1,12 @@
+<div class="categorias-container">
+    <h2>Categorías</h2>
+    <ul>
+        @for(categoria of categorias; track categoria) {      
+      <li>
+        <button (click)="seleccionarCategoria(categoria)">
+          {{ categoria }}
+        </button>
+      </li>
+    }
+    </ul>
+  </div>

@@ -1,0 +1,110 @@
+<nav class="w-full px-4 md:px-6 lg:px-8">
+  <div class="relative flex h-28 items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center flex-none">
+      <a routerLink="/home">
+        <img
+          class="h-44 w-auto"
+          src="assets/sociedad-del-meme-sf.png"
+          alt="logo-sociedad-del-meme"
+        />
+      </a>
+    </div>
+
+    <!-- Menú principal -->
+    <div class="hidden lg:flex flex-1 items-center justify-center">
+      <!-- Navegación -->
+      <ul class="flex space-x-4 font-bold text-lg">
+        <li>
+          <a
+            routerLink="/"
+            class=" text-white hover:text-purple-400"
+          >
+            Inicio
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="/categorias"
+            class="text-white hover:text-purple-400"
+          >
+            Categorías
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="flex items-center space-x-4 flex-none">
+       <!-- Botones de Login y Registro -->
+       @if (!Logeado) {
+      <button
+        (click)="openModal('login')"
+        class="bg-teal-400 text-white rounded-md px-3 py-2 text-sm font-medium hover:bg-teal-600"
+      >
+        Entrar
+      </button>
+
+      <button
+        (click)="openModal('registro')"
+        class="bg-purple-400 text-white rounded-md px-3 py-2 text-sm font-medium hover:bg-purple-600"
+      >
+        Registro
+      </button>
+      }
+
+      <!-- Panel Admin -->
+      @if (esAdmin) {
+      <a
+        routerLink="/panel-admin"
+        routerLinkActive="bg-purple-400 text-white"
+        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-purple-400 hover:text-white"
+      >
+        Panel
+      </a>
+      }
+
+      <!-- Usuario Logeado -->
+      @if (Logeado) {
+      <div class="flex items-center">
+        <span class=" text-gray-200 saludo">Hola, {{ nombreUsuario }}</span>
+        <div class="relative">
+          <button class="h-8 w-8 rounded-full"
+            (click)="toggleDropdownMenu()"
+          >
+            <!-- <img
+              [src]="userImage"
+              alt="img-perfil"
+              class="h-8 w-8 rounded-full"
+            />-->
+          </button>
+          @if (dropdownMenuAbierto) {
+          <div
+            class="absolute right-0 mt-2 w-48 rounded-md shadow-lg z-10"
+          >
+            <button
+              (click)="router.navigate(['/perfil'])"
+              class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-teal-400"
+            >
+              Ver Perfil
+            </button>
+            <button
+              (click)="logout()"
+              class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-teal-400"
+            >
+              Salir
+            </button>
+          </div>
+          }
+        </div>
+      </div>
+      }
+      <!-- Modales -->
+      @if (mostrarModal === 'login') {
+      <app-login></app-login>
+      }
+      @if (mostrarModal === 'registro') {
+      <app-registro></app-registro>
+      }
+    </div>
+  </div>
+</nav>

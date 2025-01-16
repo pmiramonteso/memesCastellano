@@ -1,0 +1,112 @@
+<div class="space-y-6">
+    @if (!editando && !agregando) {
+      <div class="flex justify-center mt-6">
+        <button
+          (click)="agregarMeme()"
+          class="btn-77 max-w-xs px-4 py-2 text-white hover:text-purple-600 bg-purple-400 rounded-md hover:bg-white"
+        >
+          NUEVO MEME
+        </button>
+      </div>
+    }
+  
+    @if (mostrarFormularioMeme) {
+      <div class="flex items-center justify-center h-screen">
+      <form
+        [formGroup]="memeForm"
+        (ngSubmit)="agregarMeme()"
+        class="bg-[url('/assets/fondo.jpg')] bg-cover bg-center p-6 max-w-3xl bg-white bg-opacity-90 border-2 border-purple-950 shadow-lg rounded-lg transition-colors duration-300"
+      >
+        <!-- Título -->
+        <div>
+          <label class="block text-sm text-white font-medium mb-1" for="titulo">Título</label>
+          <input
+            id="titulo"
+            type="text"
+            formControlName="titulo"
+            class="w-full border border-purple-900 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-900"
+            required
+          />
+        </div>
+  
+        <!-- Descripción -->
+        <div>
+          <label class="block text-sm text-white font-medium mb-1" for="descripcion">Descripción</label>
+          <textarea
+            id="descripcion"
+            formControlName="descripcion"
+            class="w-full border border-purple-900 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-900"
+            required
+          ></textarea>
+        </div>
+  
+        <!-- Categoría -->
+        <div>
+          <label class="block text-sm text-white font-medium mb-1" for="categoria">Categoría</label>
+          <input
+            id="categoria"
+            type="text"
+            formControlName="categoria"
+            class="w-full border border-purple-900 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-900"
+            required
+          />
+        </div>
+  
+        <!-- Imagen -->
+        <div>
+          <label class="block text-sm text-white font-medium mb-1" for="imagen">Imagen</label>
+          <input
+            id="imagen"
+            type="file"
+            (change)="onFileSelected($event)"
+            class="w-full border border-purple-900 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-900"
+          />
+        </div>
+  
+        <!-- Acciones -->
+        <button
+          type="submit"
+          class="bg-purple-500 text-white px-4 py-2 mt-5 rounded-md hover:bg-purple-300 focus:ring-2 focus:ring-purple-500 w-full"
+        >
+          Guardar
+        </button>
+      </form>
+    </div>
+    }
+  
+    <div class="space-y-4 mt-8">
+      @if (!editando && !agregando) {
+        <h2 class="text-2xl font-semibold text-center">Lista de Memes</h2>
+        @if (memes && memes.length > 0) {
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          >
+            @for (meme of memes; track meme.id) {
+              <div class="card">
+                <h3 class="font-semibold text-lg">{{ meme.titulo }}</h3>
+                <p class="text-sm text-gray-400">{{ meme.descripcion }}</p>
+                <img [src]="meme.imagen" alt="{{ meme.titulo }}" class="mt-4" />
+                <div class="mt-4 flex gap-4">
+                  <button
+                    (click)="editarMeme(meme)"
+                    class="btn-77 text-white hover:text-teal-600 bg-teal-400 rounded-md hover:bg-white"
+                  >
+                    EDITAR
+                  </button>
+                  <button
+                    (click)="eliminarMeme(meme)"
+                    class="btn-77 text-white hover:text-teal-600 bg-black hover:bg-white rounded-md"
+                  >
+                    ELIMINAR
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="text-center text-gray-500">No hay memes disponibles.</div>
+        }
+      }
+    </div>
+  </div>
+  

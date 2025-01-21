@@ -1,0 +1,125 @@
+<!-- Botón para abrir la barra lateral -->
+<button
+  data-drawer-target="default-sidebar"
+  data-drawer-toggle="default-sidebar"
+  aria-controls="default-sidebar"
+  type="button"
+  class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-teal-500 rounded-lg sm:hidden hover:bg-teal-200 focus:outline-none focus:ring-2 focus:ring-teal-300 transition-all duration-300 ease-in-out"
+>
+  <span class="sr-only">Abrir barra lateral</span>
+  <svg
+    class="w-6 h-6"
+    aria-hidden="true"
+    fill="currentColor"
+    viewBox="0 0 20 20"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      clip-rule="evenodd"
+      fill-rule="evenodd"
+      d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+    ></path>
+  </svg>
+</button>
+<div class="relative h-screen bg-gradient-to-b from-teal-700 to-purple-500 overflow-hidden">
+  <div class="absolute right-5 top-10 px-6 logo">
+    <a href="/home">
+      <img
+        class="h-36 w-auto"
+        src="assets/img/sociedad-del-meme-sf.png"
+        alt="logo-sociedad-del-meme"
+      />
+    </a>
+  </div>
+  <!-- Barra lateral -->
+  <aside
+    id="default-sidebar"
+    class="fixed top-0 left-0 z-40 w-64 h-full transition-transform -translate-x-full sm:translate-x-0 bg-purple-700 shadow-lg rounded-r-lg sm:block sm:flex-shrink-0 hidden"
+    aria-label="Sidenav"
+  >
+    <div class="overflow-hidden py-5 px-4 h-full flex items-center flex-col justify-center">
+      <!-- Foto de usuario y datos ampliados
+      <div class="flex items-center mb-6">
+         <img
+          [src]="userImage"
+          alt="Foto de Usuario"
+          class="w-52 h-52 object-cover rounded-full mb-4"
+        />
+      </div>-->
+      <div class="text-start text-white ml-3">
+        <p class="text-xl font-semibold">
+          {{ usuario?.nombre || "Nombre de Usuario" }}
+        </p>
+        <p class="text-teal-100 text-sm">{{ usuario?.roles || "Usuario" }}</p>
+        <p class="text-teal-100 text-sm">
+          {{ usuario?.email || "email@example.com" }}
+        </p>
+      </div>
+
+      <!-- Opciones del usuario -->
+      <div class="space-y-4 mt-4">
+        <a
+          href="/memes-admin"
+          class="flex items-center space-x-2 text-white bg-gradient-to-b from-purple-300 to-teal-700 hover:text-white p-3 rounded-lg transition-colors duration-300"
+        >
+          <i class="fa-regular fa-face-grin-tongue-wink"></i>
+          <span class="text-lg">Administra MEMES</span>
+        </a>
+        <a
+        href="/categorias-admin"
+        class="flex items-center space-x-2 text-white bg-gradient-to-b from-purple-300 to-teal-700 hover:text-white p-3 rounded-lg transition-colors duration-300"
+      >
+        <i class="fa-solid fa-icons"></i>
+        <span class="text-lg">Administra Categorias</span>
+      </a>
+      </div>
+    </div>
+  </aside>
+
+<!-- Contenedor principal con las cards de Eventos, Blog y Negocios -->
+<div
+  class="h-screen flex flex-col sm:flex-row-reverse sm:ml-64 justify-center items-center"
+>
+  <!-- Cards de Eventos, Blog y Negocios -->
+  <div
+  class="px-4 sm:px-8 mt-8 sm:mt-16 max-w-screen-xl sm:max-w-screen-md w-full flex justify-center gap-6"
+>
+  <!-- Tarjeta de Memes -->
+  <div
+  class="w-full sm:max-w-sm bg-white rounded-2xl shadow-xl overflow-hidden group relative hover:scale-105 transition-all duration-300 mb-6 sm:mb-0 sm:mr-6 flex-shrink-0"
+>
+  <div
+    class="w-full h-64 sm:h-48 lg:h-96 bg-purple-700 text-white flex items-center justify-center"
+  >
+    <i class="fa-regular fa-face-grin-tongue-wink text-5xl sm:text-4xl lg:text-8xl"></i>
+  </div>
+  <div class="absolute inset-0 flex items-start justify-center mt-8 sm:mt-10 lg:mt-12">
+    <span
+      class="text-xl sm:text-2xl lg:text-3xl font-semibold text-white z-10 group-hover:opacity-80"
+      >Administrar MEMES</span
+    >
+  </div>
+  <a href="/memes-admin" class="block w-full h-full p-4 absolute inset-0"></a>
+</div>
+
+<!-- Tarjeta de Categorias -->
+<div
+  class="w-full sm:max-w-sm bg-white rounded-2xl shadow-xl overflow-hidden group relative hover:scale-105 transition-all duration-300 mb-6 sm:mb-0 sm:mr-6 flex-shrink-0"
+>
+  <div
+    class="w-full h-64 sm:h-48 lg:h-96 bg-purple-700 text-white flex items-center justify-center"
+  >
+    <i class="fa-solid fa-icons text-5xl sm:text-4xl lg:text-8xl"></i>
+  </div>
+  <div class="absolute inset-0 flex items-start justify-center mt-8 sm:mt-10 lg:mt-12">
+    <span
+      class="text-xl sm:text-2xl lg:text-3xl font-semibold text-white z-10 group-hover:opacity-80"
+      >Administrar Categorias</span
+    >
+  </div>
+  <a href="/categorias-admin" class="block w-full h-full p-4 absolute inset-0"></a>
+</div>
+</div>
+
+</div>
+</div>

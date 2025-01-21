@@ -1,8 +1,8 @@
 export interface Meme {
     id?: number;
-    titulo: string;
-    descripcion: string;
-    categoria: string;
+    titulo?: string;
+    descripcion?: string;
     imagen: string;
+    categoria_nombre: string;
   }
   

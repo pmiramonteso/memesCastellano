@@ -1,26 +1,26 @@
 .categorias-container {
-    h2 {
-      font-size: 1.8rem;
-      color: teal;
-    }
-  
-    ul {
-      list-style: none;
-      padding: 0;
-  
-      li {
-        cursor: pointer;
-        padding: 10px;
-        margin: 5px 0;
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-  
-        &:hover {
-          background-color: #d4f4f4;
-        }
-      }
+  padding: 2rem;
+  border-radius: 12px;
+
+  .card {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
     }
   }
+
+  .selected {
+    border: 2px solid yellow;
+    box-shadow: 0 0 12px yellow;
+  }
+}
+
+.card img {
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
   

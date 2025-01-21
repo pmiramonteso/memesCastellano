@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './notificaciones.component.html',
   styleUrl: './notificaciones.component.scss'
 })
-export class NotificacionComponent implements OnInit{
+export class NotificacionesComponent implements OnInit{
   mensaje: string | null = null;
   tipo: 'success' | 'error' | null = null;
 

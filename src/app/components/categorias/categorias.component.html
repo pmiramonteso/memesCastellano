@@ -1,12 +1,27 @@
-<div class="categorias-container">
-    <h2>Categorías</h2>
-    <ul>
-        @for(categoria of categorias; track categoria) {      
-      <li>
-        <button (click)="seleccionarCategoria(categoria)">
-          {{ categoria }}
-        </button>
-      </li>
-    }
-    </ul>
-  </div>
+<div class="categorias-container px-8 py-4">
+
+<h2 class="text-white text-center text-2xl mb-8">
+  Explora nuestras categorías únicas, ríe con cada clic y vota por los que te arrancan carcajadas. <br>
+  Juntos, crearemos el salón de la fama de los memes más legendarios del 2025.
+</h2>
+
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+  @for(categoria of categorias; track categoria) {
+    <div
+  (click)="abrirDocumentacion(categoria)"
+  [class.selected]="categoria.nombre === categoriaSeleccionada"
+  class="card hover:scale-105 transition-transform cursor-pointer rounded-lg p-4 text-center shadow-lg text-white"
+  [ngClass]="categoria.degradado ? categoria.degradado : 'bg-gradient-to-r from-teal-400 to-teal-600'"
+>
+      <img
+        [src]="categoria.imagen"
+        alt="Imagen de {{ categoria.nombre }}"
+        class="h-64 mb-4"
+      />
+      <p class="text-xl font-semibold capitalize">{{ categoria.nombre }}</p>
+    </div>
+  }
+</div>
+</div>
+
+<app-footer></app-footer>

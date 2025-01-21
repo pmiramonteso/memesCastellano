@@ -1,12 +1,15 @@
 const express = require('express');
-const router = express.Router();
+const { authenticateToken } = require('../middlewares/authenticateToken.js');
 const memeController = require('../controllers/memeController');
+const { uploadFileMiddleware } = require("../middlewares/upload");
+
+const router = express.Router();
 
 router.get('/', memeController.obtenerMemes);
 router.get('/:id', memeController.obtenerMemePorId);
-router.get('/categoria/:categoria', memeController.obtenerMemesPorCategoria);
-router.post('/', memeController.agregarMeme);
-router.patch('/:id', memeController.actualizarMeme);
-router.delete('/:id', memeController.eliminarMeme);
+router.get('/categorias/:categoria', memeController.obtenerMemesPorCategoria);
+router.post('/', uploadFileMiddleware, memeController.agregarMeme);
+router.patch('/:id', uploadFileMiddleware, memeController.actualizarMeme);
+router.delete('/:id', authenticateToken, memeController.eliminarMeme);
 
 module.exports = router;

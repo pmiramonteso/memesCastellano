@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../db.js');
-const Memes = require('./memeModel.js');
+const Meme = require('./memeModel.js');
 
 const Voto = sequelize.define('Voto', {
   id: {
@@ -18,7 +18,7 @@ const Voto = sequelize.define('Voto', {
 });
 
 // Relación: Un meme puede tener muchos votos
-Memes.hasMany(Voto, { foreignKey: 'meme_id', onDelete: 'CASCADE' });
-Voto.belongsTo(Memes, { foreignKey: 'meme_id' });
+Meme.hasMany(Voto, { foreignKey: 'meme_id', onDelete: 'CASCADE' });
+Voto.belongsTo(Meme, { foreignKey: 'meme_id' });
 
 module.exports = Voto;

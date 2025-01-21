@@ -1,41 +1,54 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
+import { Observable, tap } from 'rxjs';
+import { environment } from '../environments/environment';
+import { Meme } from '../interface/meme';
+import { CategoriaService } from './categoria.service';
+import { Categoria } from '../interface/categoria';
 @Injectable({
   providedIn: 'root'
 })
 export class MemeService {
-  private apiURL = 'http://localhost:3000/api';
+  private apiURL = `${environment.endpoint}api/memes`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private categoriaService: CategoriaService) {}
 
-  getCategorias(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiURL}/categorias`);
+  getMemesPorCategoria(categoria?: string): Observable<Meme[]> {
+    const url = categoria ? `${this.apiURL}/categorias/${categoria}` : this.apiURL;
+    return this.http.get<Meme[]>(url).pipe(
+      tap({
+        next: (response) => console.log('Memes recibidos:', response),
+        error: (err) => console.error('Error al obtener memes:', err)
+      })
+    );
   }
 
-  getMemesPorCategoria(categoria: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiURL}/memes?categoria=${categoria}`);
+  getMemePorId(id: number): Observable<Meme> {
+    return this.http.get<Meme>(`${this.apiURL}/${id}`);
   }
 
-  getMemePorId(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiURL}/memes/${id}`);
+  crearMeme(memeData: FormData): Observable<Meme> {
+    return this.http.post<Meme>(`${this.apiURL}`, memeData).pipe(
+      tap(response => {
+        console.log('Respuesta de la API al crear meme:', response);
+      })
+    );;
   }
 
-  crearMeme(memeData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.apiURL}/memes`, memeData);
-  }
-
-  actualizarMeme(id: number, memeData: FormData): Observable<any> {
-    return this.http.put<any>(`${this.apiURL}/memes/${id}`, memeData);
+  actualizarMeme(id: number, memeData: FormData): Observable<Meme> {
+    return this.http.patch<Meme>(`${this.apiURL}/${id}`, memeData);
   }
 
   eliminarMeme(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiURL}/memes/${id}`);
+    return this.http.delete<any>(`${this.apiURL}/${id}`);
   }
 
   votarMeme(id: number, voto: string): Observable<any> {
     return this.http.post(`${this.apiURL}/votos`, { id, voto });
+  }
+
+  obtenerCategorias(): Observable<Categoria[]> {
+    return this.categoriaService.obtenerCategorias();
   }
 }
 

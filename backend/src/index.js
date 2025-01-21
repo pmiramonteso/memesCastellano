@@ -6,11 +6,13 @@ const authRutas = require('./routes/authRutas');
 const usuarioRutas = require('./routes/usuarioRutas');
 const testRoutes = require('./routes/testRutas');
 const memeRutas = require('./routes/memeRutas');
+const categoriaRutas = require('./routes/categoriaRutas')
 const votosRutas = require('./routes/votosRutas');
 const { testConnection } = require('./db');
 
 const { insertInitialUserData } = require('./start_data');
 const dotenv = require('dotenv');
+const path = require('path');
 
 const app = express();
 
@@ -28,15 +30,16 @@ app.use(express.urlencoded({ extended: true }));
   await insertInitialUserData();
 })();
 
+app.use('/assets/img', express.static(path.join(__dirname, '/uploads')));
+
 // Configuracion de rutas
 app.use('/auth', authRutas);
 app.use('/usuario', usuarioRutas);
 app.use('/test', testRoutes);
 app.use('/api/memes', memeRutas);
+app.use('/api/categorias', categoriaRutas);
 app.use('/api/votos', votosRutas);
 
 app.listen(3000, () => {
   console.log(`Servidor de Express escuchando en el puerto 3000`);
 });
-
-

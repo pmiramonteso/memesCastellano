@@ -11,10 +11,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   const usuario = authService.obtenerUsuario();
   const token = authService.getToken();
 
-  console.log("Token:", token);
-  console.log("Usuario:", usuario);
-  console.log("Route roles:", route.data['roles']);
-
   const roles: string[] = route.data['roles']; 
 
   if (token && usuario) { 
@@ -23,7 +19,6 @@ export const authGuard: CanActivateFn = (route, state) => {
       return true;
     }
 }
-
 router.navigate(['/login']);
 return false;
 };

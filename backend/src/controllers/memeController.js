@@ -36,40 +36,31 @@ const obtenerMemePorId = async (req, res) => {
 };
 const obtenerMemesPorCategoria = async (req, res) => {
     try {
-        // Obtener el nombre de la categoría desde los parámetros de la URL
         const categoriaNombre = req.params.categoria;
 
-        // Buscar la categoría por nombre
         const categoria = await Categorias.findOne({
             where: { nombre: categoriaNombre }
         });
 
-        // Si la categoría no se encuentra, responder con un error 404
         if (!categoria) {
             return res.status(404).json({ message: 'Categoría no encontrada' });
         }
 
-        // Obtener los memes relacionados con esa categoría
         const memes = await Meme.findAll({
             where: {
-                categoria_nombre: categoria.nombre, // Filtrar por el nombre de la categoría
+                categoria_nombre: categoria.nombre,
             },
             include: { 
                 model: Categorias, 
                 as: 'categoria', 
-                attributes: ['id', 'nombre'] // Incluir la categoría en los resultados
+                attributes: ['id', 'nombre']
             }
         });
-
-        // Si no hay memes en esta categoría, responder con un mensaje
         if (memes.length === 0) {
             return res.status(200).json({ message: 'No hay memes en esta categoría', memes: [] });
         }
-
-        // Responder con los memes encontrados
         res.status(200).json(memes);
     } catch (error) {
-        // Manejar cualquier error que ocurra
         console.error('Error al obtener los memes por categoría:', error);
         res.status(500).json({ message: 'Error al obtener los memes por categoría', error });
     }
@@ -82,8 +73,6 @@ const agregarMeme = async (req, res) => {
         
         const { titulo, descripcion, categoria_nombre } = req.body;
         const imagen = req.file.originalname;
-
-        // Buscar la categoría por nombre
         const categoria = await Categorias.findOne({ 
             where: { nombre: categoria_nombre }
         });
@@ -92,15 +81,13 @@ const agregarMeme = async (req, res) => {
             return res.status(400).json({ message: 'La categoría especificada no existe.' });
         }
 
-        // Crear el nuevo meme, usando categoria_nombre
         const nuevoMeme = await Meme.create({
             titulo,
             descripcion,
             imagen,
-            categoria_nombre  // Usar categoria_nombre directamente aquí
+            categoria_nombre
         });
 
-        // Traer el meme con la categoría asociada
         const memeConCategoria = await Meme.findByPk(nuevoMeme.id, {
             include: [{
                 model: Categorias,

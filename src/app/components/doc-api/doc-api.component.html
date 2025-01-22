@@ -1,4 +1,64 @@
+<app-demo-api [categoria]="categoria"></app-demo-api>
 
+<div class="p-6 text-white flex flex-col justify-center items-center text-start rounded-lg shadow-lg">
+  <h1 class="text-3xl font-extrabold mb-4 text-center">Documentación de la API</h1>
 
-  <app-demo-api [categoria]="categoria"></app-demo-api>
-  <app-footer></app-footer>
+  <p class="text-lg mb-6">Aquí se encuentra la documentación para la API de memes. Explora los detalles de cómo utilizarla y los métodos disponibles.</p>
+
+  <div class="w-full max-w-4xl mx-auto">
+    <h2 class="text-2xl font-semibold text-teal-400 mb-2">URL base:</h2>
+    <p class="text-xl mb-4 bg-gray-700 p-3 rounded-md"><code>http://localhost:3000/api/memes</code></p>
+
+    <h2 class="text-2xl font-semibold text-teal-400 mb-2">Método de autenticación:</h2>
+    <p class="text-xl mb-4">Clave API</p>
+
+    <h2 class="text-2xl font-semibold text-teal-400 mb-2">Formatos de respuesta:</h2>
+    <p class="text-xl mb-4">JSON</p>
+
+    <h2 class="text-2xl font-semibold text-teal-400 mb-2">Versión de la API:</h2>
+    <p class="text-xl mb-4">v1</p>
+
+    <h3 class="text-xl font-bold text-yellow-500 mt-6 mb-3">Introducción</h3>
+    <p class="text-lg mb-6">Esta API permite acceder a memes categorizados, con categorías como "programadores", "gatos", y más. Puedes consultar memes aleatorios y buscar por categoría.</p>
+
+    <h3 class="text-xl font-bold text-yellow-500 mt-6 mb-3">Autenticación</h3>
+    <p class="text-lg mb-6">Para acceder a la API, necesitarás una clave API. Regístrate para obtenerla en <code>/api/generar-api-key</code>.</p>
+
+    <h3 class="text-xl font-bold text-yellow-500 mt-6 mb-3">Métodos de la API</h3>
+    <ul class="list-disc pl-5">
+      <li><strong class="text-teal-400">auth</strong>
+        <ul class="list-inside">
+          <li><strong class="text-yellow-500">GET</strong>: <code>/api/generar-api-key</code> - Genera una nueva clave API</li>
+        </ul>
+      </li>
+      <li><strong class="text-teal-400">categorias</strong>
+        <ul class="list-inside">
+          <li><strong class="text-yellow-500">GET</strong>: <code>/api/memes/categorias</code> - Obtiene todas las categorías de memes</li>
+          <li><strong class="text-yellow-500">GET</strong>: <code>/api/memes/categorias/:categoria</code> - Obtiene memes por categoría</li>
+        </ul>
+      </li>
+      <li><strong class="text-teal-400">demo</strong>
+        <ul class="list-inside">
+          <li><strong class="text-yellow-500">GET</strong>: <code>/api/memes/demo/random</code> - Obtiene un meme aleatorio</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3 class="text-xl font-bold text-yellow-500 mt-6 mb-3">Ejemplo completo de solicitud</h3>
+    <p class="text-lg mb-4"><strong>GET</strong> <code>http://localhost:4200/api/memes/categorias/gatos</code></p>
+    <p class="text-lg mb-4"><strong>Headers:</strong></p>
+    <ul class="list-disc pl-5">
+      <li><code>x-api-key: tu-clave-api-aqui</code></li>
+    </ul>
+
+    <h3 class="text-xl font-bold text-yellow-500 mt-6 mb-3">Respuesta:</h3>
+    <p class="bg-gray-700 p-4 rounded-md text-white">
+    "id": 1,
+    "titulo": "Meme de gatos",
+    "descripcion": "Un gato haciendo algo gracioso",
+    "imagen": "http://localhost:3000/assets/img/gato.jpg"
+</p>
+  </div>
+</div>
+
+<app-footer></app-footer>

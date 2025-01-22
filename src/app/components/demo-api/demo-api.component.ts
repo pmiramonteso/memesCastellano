@@ -18,7 +18,7 @@ constructor(private memeService: MemeService){}
       return;
     }
 
-    this.memeService.getMemesPorCategoria(this.categoria).subscribe((memes) => {
+    this.memeService.getPublicMemesPorCategoria(this.categoria).subscribe((memes) => {
       if (memes.length > 0) {
         const memesConUrl = memes.map(meme => {
           meme.imagen = meme.imagen ? `http://localhost:3000/assets/img/${meme.imagen}` : 'URL_IMAGEN_DEFAULT';

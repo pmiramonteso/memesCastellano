@@ -5,7 +5,7 @@ const path = require('path');
 const obtenerUsuario = async (req, res) => {
   try {
     const user_data = {
-      "id_user": req.usuario.id_user,
+      "id_usuario": req.usuario.id_usuario,
       "nombre": req.usuario.nombre,
       "apellidos": req.usuario.apellidos,
       "email": req.usuario.email,

@@ -1,36 +1,38 @@
-<h3 class="text-3xl font-bold text-white flex justify-center mt-10 mb-20">Categorías</h3>
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+  @if(!categoriaSeleccionada) {
+  <h3 class="text-3xl font-bold text-white flex justify-center mt-10 mb-20">Categorías</h3>
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
     @for(categoria of categorias; track categoria) {
       <div
-      (click)="seleccionarCategoria(categoria)"
-      [class.selected]="categoriaSeleccionada?.nombre === categoria.nombre"
-      class="card hover:scale-105 transition-transform cursor-pointer rounded-lg p-4 text-center shadow-lg text-white"
-      [ngClass]="categoria.degradado ? categoria.degradado : 'bg-gradient-to-r from-teal-400 to-teal-600'"
-    >
-          <img
-            [src]="categoria.imagen"
-            alt="Imagen de {{ categoria.nombre }}"
-            class="h-64 mb-4"
-          />
-          <p class="text-xl font-semibold capitalize">{{ categoria.nombre }}</p>
-        </div>
-  }
-</div>
-
+        (click)="seleccionarCategoria(categoria)"
+       [class.selected]="categoriaSeleccionada === categoria.nombre"
+        class="card hover:scale-105 transition-transform cursor-pointer rounded-lg p-4 text-center shadow-lg text-white"
+        [ngClass]="categoria.degradado ? categoria.degradado : 'bg-gradient-to-r from-teal-400 to-teal-600'"
+      >
+        <img
+          [src]="categoria.imagen"
+          alt="Imagen de {{ categoria.nombre }}"
+          class="h-64 mb-4"
+        />
+        <p class="text-xl font-semibold capitalize">{{ categoria.nombre }}</p>
+      </div>
+    }
+  </div>
+}
 
 <div class="space-y-6">
   @if (categoriaSeleccionada) {
-  <div class="flex justify-center mt-6">
+
+  <div class="flex justify-center">
     <button
       (click)="agregarMeme()"
-      class="btn-77 max-w-xs px-4 py-2 text-white hover:text-yellow-400 bg-yellow-400 rounded-md hover:bg-white"
+      class="btn-77 max-w-xs px-4 py-2 text-white rounded-md"
     >
       NUEVO MEME
     </button>
   </div>
   } 
   @if (mostrarFormularioMeme) {
-  <div class="flex items-center justify-center h-screen">
+  <div class="flex items-center justify-center">
     <form
       [formGroup]="memeForm"
       (ngSubmit)="agregarMeme()"
@@ -103,17 +105,17 @@
   }
 
   <!-- Lista de memes filtrados por categoría -->
-  <div class="space-y-4 mt-8">
-    <h2 class="text-2xl font-semibold text-center text-white">{{ categoriaSeleccionada?.nombre }}</h2>
+  <div class="space-y-4 mt-8 mx-8">
     @if(memes && memes.length > 0) {
+    <h2 class="text-2xl font-semibold text-center text-white">Categoria: {{ categoriaSeleccionada?.nombre }}</h2>
     <div
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
     >
       @for(meme of memes; track meme.id) {
-      <div class="card">
-        <h3 class="font-semibold text-gray-400 text-lg">{{ meme.titulo }}</h3>
-        <p class="text-sm text-gray-400">{{ meme.descripcion }}</p>
-        <img [src]="meme.imagen" alt="{{ meme.titulo }}" class="mt-4" />
+      <div class="card flex flex-col justify-center">
+        <h3 class="font-semibold text-gray-400 text-lg flex justify-center">{{ meme.titulo }}</h3>
+        <p class="text-sm text-gray-400 flex justify-center">{{ meme.descripcion }}</p>
+        <img [src]="meme.imagen" alt="{{ meme.titulo }}" class="mt-4 w-full max-w-sm mx-auto roundend-md" />
         <div class="mt-4 flex gap-4">
           <button
             (click)="editarMeme(meme)"
@@ -132,7 +134,9 @@
       }
     </div>
     } @else {
+      @if(categoriaSeleccionada){
     <div class="text-center text-gray-500">No hay memes disponibles.</div>
+  }
     }
   </div>
 </div>

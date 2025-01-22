@@ -70,7 +70,6 @@ export class RegistroComponent {
           }
         },
         error: (error) => {
-          console.log('Error al registrarse', error);
           if (error.error?.errors) {
             this.correoEnUso = error.error.errors.find((err: any) => err.param === 'email')?.msg || null;
           }

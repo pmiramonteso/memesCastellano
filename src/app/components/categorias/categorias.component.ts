@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { MemeService } from '../../services/meme.service';
 import { CategoriaService } from '../../services/categoria.service';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { Categoria } from '../../interface/categoria';
@@ -17,25 +16,22 @@ export class CategoriasComponent implements OnInit{
   categorias: Categoria[] = [];
   categoriaSeleccionada: string = '';
 
-  constructor(private memeService: MemeService, private router: Router, private categoriaService: CategoriaService) {}
+  constructor(private router: Router, private categoriaService: CategoriaService) {}
 
   ngOnInit(): void {
     this.obtenerCategorias();
-    console.log(this.categorias);
   }
 
   obtenerCategorias(): void {
-    this.categoriaService.obtenerCategorias().subscribe({
+    this.categoriaService.obtenerCategoriasPublicas().subscribe({
       next: (data) => {
         if (data && Array.isArray(data)) {
           this.categorias = data.map(categoria => {
             categoria.imagen = categoria.imagen ? 
               `http://localhost:3000/assets/img/${categoria.imagen}` : 
               'URL_IMAGEN_DEFAULT';
-            console.log(categoria.degradado);
             return categoria;
           });
-          console.log(this.categorias); 
         } else {
           console.error('Los datos obtenidos no son válidos o están vacíos.');
         }
@@ -46,8 +42,6 @@ export class CategoriasComponent implements OnInit{
       }
     });
   }
-  
-  
 
   abrirDocumentacion(categoria: Categoria): void {
     this.router.navigate(['/categorias', categoria.nombre]);

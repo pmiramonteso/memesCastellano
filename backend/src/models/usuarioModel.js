@@ -30,7 +30,6 @@ const Usuario = sequelize.define('Usuario', {
     get() {
       const rawValue = this.getDataValue('roles');
       if (!rawValue) {
-        console.log('Valor de roles es undefined o null');
         return [];
       }
       return rawValue.split(',');
@@ -41,7 +40,6 @@ const Usuario = sequelize.define('Usuario', {
       } else if (typeof value === 'string') {
         this.setDataValue('roles', value);
       } else {
-        console.log('Valor de roles no es un arreglo ni una cadena:', value);
       }
     }
   },

@@ -17,6 +17,7 @@ export class CategoriasAdminComponent implements OnInit {
   categoriaEditando: Categoria | null = null;
   selectedFile: File | null = null;
   defaultImageUrl: string = 'assets/img/default-meme.jpg';
+  formVisible = false;
 
   constructor(
     private fb: FormBuilder,
@@ -36,16 +37,17 @@ export class CategoriasAdminComponent implements OnInit {
   ngOnInit(): void {
     this.obtenerCategorias();
   }
-
+  mostrarFormulario(): void {
+    this.formVisible = true;
+  }
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
       this.selectedFile = input.files[0];
     }
   }
-
   obtenerCategorias(): void {
-    this.categoriasService.obtenerCategorias().subscribe(
+    this.categoriasService.obtenerCategoriasPublicas().subscribe(
       (data) => {
         this.categorias = data;
       },
@@ -95,7 +97,6 @@ export class CategoriasAdminComponent implements OnInit {
       }
     }
   }
-  
 
   editarCategoria(categoria: Categoria): void {
     this.editando = true;
@@ -121,10 +122,10 @@ export class CategoriasAdminComponent implements OnInit {
       );
     }
   }
-
   resetFormulario(): void {
     this.categoriaForm.reset();
     this.editando = false;
     this.categoriaEditando = null;
+    this.formVisible = false;
   }
 }

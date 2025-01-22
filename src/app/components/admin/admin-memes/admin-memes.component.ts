@@ -6,6 +6,7 @@ import { NotificacionesService } from '../../../services/notificaciones.service'
 import { Meme } from '../../../interface/meme';
 import { Categoria } from '../../../interface/categoria';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-admin-memes',
@@ -29,12 +30,13 @@ export class AdminMemesComponent implements OnInit {
     private fb: FormBuilder,
     private memeService: MemeService,
     private categoriasService: CategoriaService,
+    private authService: AuthService,
     private notificationService: NotificacionesService
   ) {
     this.memeForm = this.fb.group({
       titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
-      categoria_id: ['', Validators.required],
+      categoria_nombre: ['', Validators.required],
     });
   }
 
@@ -43,38 +45,34 @@ export class AdminMemesComponent implements OnInit {
   }
 
   obtenerCategorias(): void {
-    this.categoriasService.obtenerCategorias().subscribe({
-      next: (data) => {
+    this.categoriasService.obtenerCategoriasPublicas().subscribe({
+      next: (data: Categoria[]) => {
         if (data && Array.isArray(data)) {
-          this.categorias = data.map(categoria => {
-            categoria.imagen = categoria.imagen ? 
+          this.categorias = data.map((categoria) => ({
+            ...categoria,
+            imagen: categoria.imagen ? 
               `http://localhost:3000/assets/img/${categoria.imagen}` : 
-              'URL_IMAGEN_DEFAULT';
-            console.log(categoria.degradado);
-            return categoria;
-          });
-          console.log(this.categorias); 
+              'URL_IMAGEN_DEFAULT',
+          }));
         } else {
           console.error('Los datos obtenidos no son válidos o están vacíos.');
         }
       },
       error: (err) => {
         console.error('Error al obtener las categorías:', err);
-        alert('Hubo un error al cargar las categorías. Intenta de nuevo más tarde.');
-      }
+      },
     });
   }
 
-  seleccionarCategoria(categoria: any): void {
-    this.categoriaSeleccionada = categoria;
-  console.log('Categoria seleccionada:', this.categoriaSeleccionada);
+  seleccionarCategoria(categoria: Categoria): void {
+  this.categoriaSeleccionada = categoria;
+  this.memes = [];
   this.obtenerMemesPorCategoria(categoria.nombre);
   }
 
   obtenerMemesPorCategoria(categoria: string): void {
-    this.memeService.getMemesPorCategoria(categoria).subscribe(
+    this.memeService.getPublicMemesPorCategoria(categoria).subscribe(
       (data) => {
-        console.log('Memes obtenidos:', data);
         this.memes = data.map(meme => {
           meme.imagen = meme.imagen ? `http://localhost:3000/assets/img/${meme.imagen}` : this.defaultImageUrl;
           return meme;
@@ -112,7 +110,7 @@ export class AdminMemesComponent implements OnInit {
       memeData.append('imagen', this.selectedFile);
       memeData.append('categoria_nombre', this.memeForm.get('categoria_nombre')?.value);
 
-
+      const usuario = this.authService.obtenerUsuario();
       if (this.editando && this.memeEditando) {
         this.memeService.actualizarMeme(this.memeEditando.id as number, memeData).subscribe(
           () => {
@@ -152,6 +150,12 @@ export class AdminMemesComponent implements OnInit {
     this.memeEditando = null;
   }
 
+  volverACategorias(): void {
+    this.categoriaSeleccionada = null;
+    this.memes = [];
+    this.mostrarFormularioMeme = false;
+  }
+
   editarMeme(meme: Meme): void {
     this.editando = true;
     this.agregando = false;
@@ -171,18 +175,17 @@ export class AdminMemesComponent implements OnInit {
     }
   
     if (confirm('¿Estás seguro de que deseas eliminar este meme?')) {
-      if (this.categoriaSeleccionada?.nombre) {
-        const nombreCategoria = this.categoriaSeleccionada.nombre;
-        this.memeService.getMemesPorCategoria(nombreCategoria).subscribe(
-          () => {
-            this.notificationService.mostrarExito('Meme eliminado con éxito');
-            this.obtenerMemesPorCategoria(nombreCategoria);
-          },
-          (error) => {
-            console.error('Error al eliminar el meme:', error);
+      this.memeService.eliminarMeme(meme.id).subscribe(
+        () => {
+          this.notificationService.mostrarExito('Meme eliminado con éxito');
+          if (this.categoriaSeleccionada?.nombre) {
+            this.obtenerMemesPorCategoria(this.categoriaSeleccionada.nombre);
           }
-        );  
-      }
+        },
+        (error) => {
+          console.error('Error al eliminar el meme:', error);
+        }
+      );
     }
   }
 }

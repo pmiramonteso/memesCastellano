@@ -1,3 +1,33 @@
 .logo {
     z-index: 9999;
 }
+
+@media screen and (max-width: 1024px) {
+    .h-screen .flex {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .icono {
+        margin-bottom: 60px;
+    }
+
+    .space-y-4 a {
+        width: 100%;
+        text-align: center;
+      }
+  }
+  
+  @media screen and (max-width: 640px) {
+    .h-screen .flex {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    img {
+    height: 60px ;
+    }
+
+  }

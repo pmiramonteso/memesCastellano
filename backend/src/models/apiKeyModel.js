@@ -10,7 +10,7 @@ const ApiKey = sequelize.define('ApiKey', {
   key: {
     type: DataTypes.STRING(100),
     allowNull: false,
-    unique: true, // La API Key debe ser única
+    unique: true, //AQUI esta el problema de recovery?
   },
   usuario_id: {
     type: DataTypes.INTEGER(5).UNSIGNED,

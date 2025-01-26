@@ -14,7 +14,6 @@ const obtenerUsuario = async (req, res) => {
       "updated_at": req.usuario.updated_at
     };
 
-    // Enviar una respuesta al cliente
     res.status(200).json({
       code: 1,
       message: 'Detalle Usuario',

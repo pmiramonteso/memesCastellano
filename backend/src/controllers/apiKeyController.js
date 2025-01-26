@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const ApiKey = require('../models/apiKeyModel');
 
 const generateApiKey = async (usuarioId) => {
-  const apiKey = crypto.randomBytes(32).toString("hex");  // Genera una API Key de 64 caracteres hexadecimales
+  const apiKey = crypto.randomBytes(32).toString("hex");
   const newApiKey = await ApiKey.create({
     key: apiKey,
     usuario_id: usuarioId,
@@ -34,7 +34,7 @@ const obtenerApiKey = async (req, res) => {
 
   const revocarApiKey = async (req, res) => {
     try {
-      const apiKey = req.headers['x-api-key'];  // El cliente debe enviar la API Key en los headers
+      const apiKey = req.headers['x-api-key'];
   
       if (!apiKey) {
         return res.status(400).json({ message: 'API Key no proporcionada' });

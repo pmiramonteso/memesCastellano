@@ -6,7 +6,7 @@ const Voto = sequelize.define('Voto', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true, // Valores únicos incrementales
+    autoIncrement: true,
   },
   tipo_voto: {
     type: DataTypes.INTEGER, // 1: "No me gusta", 2: "Me gusta", 3: "Me encanta"
@@ -17,7 +17,6 @@ const Voto = sequelize.define('Voto', {
   timestamps: false,
 });
 
-// Relación: Un meme puede tener muchos votos
 Meme.hasMany(Voto, { foreignKey: 'meme_id', onDelete: 'CASCADE' });
 Voto.belongsTo(Meme, { foreignKey: 'meme_id' });
 

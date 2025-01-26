@@ -5,7 +5,6 @@
   text-align: left;
   min-height: 100vh;
   background: linear-gradient(135deg, #3b004d, #005b5b);
-    
   .text-container {
     flex: 0 1 55%;
   }
@@ -20,6 +19,35 @@
       max-width: 100%;
       height: auto;
     }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .home-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 0 2rem;
+    box-sizing: border-box;
+  
+  }
+
+  .text-container, .image-container {
+    flex: 0 1 100%;
+  }
+ 
+  h1 {
+    font-size: 5rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+
+  h2, p {
+    margin-bottom: 40px;
+  }
+
+  .image-container img {
+    max-width: 90%;
   }
 }
   

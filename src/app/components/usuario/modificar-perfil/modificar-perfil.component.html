@@ -1,0 +1,40 @@
+<div class="flex justify-start p-4">
+    <div class="card w-96 bg-base-200 shadow-xl p-6 text-black">
+      <h2 class="text-xl font-bold mb-4">Modificar Usuario</h2>
+  
+      <!-- Modo Visualización -->
+       @if(!editando && usuario) {
+      <div>
+        <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+        <p><strong>Apellidos:</strong> {{ usuario.apellidos }}</p>
+        <p><strong>Email:</strong> {{ usuario.email }}</p>
+  
+        <button class="btn btn-secondary w-full mt-4" (click)="activarEdicion()">Modificar</button>
+      </div>
+    }
+
+    @if(editando){
+      <!-- Modo Edición -->
+      <form [formGroup]="usuarioForm" (ngSubmit)="actualizarUsuario()">
+        <label class="block mb-2">Nombre</label>
+        <input type="text" formControlName="nombre" class="input input-bordered w-full mb-3" required>
+  
+        <label class="block mb-2">Apellidos</label>
+        <input type="text" formControlName="apellidos" class="input input-bordered w-full mb-3" required>
+  
+        <label class="block mb-2">Email</label>
+        <input type="email" formControlName="email" class="input input-bordered w-full mb-3">
+  
+        <label class="block mb-2">Nueva Contraseña</label>
+        <input type="password" formControlName="password" class="input input-bordered w-full mb-3">
+  
+        <div class="flex gap-2">
+          <button type="submit" class="btn btn-primary w-full" [disabled]="usuarioForm.invalid">Guardar</button>
+          <button type="button" class="btn btn-error w-full" (click)="cancelarEdicion()">Cancelar</button>
+        </div>
+      </form>
+    }
+    </div>
+  </div>
+  
+  

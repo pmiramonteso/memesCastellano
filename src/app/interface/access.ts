@@ -1,9 +1,11 @@
 import { Usuario } from "./usuario";
 
 export interface Access {
-    accessToken:string,
-    message?: string;
-    data:{
-        usuario:Usuario
+    code: number;
+    message: string;
+    data: {
+        accessToken?: string;
+        apiKey?: string;
+        usuario: Usuario;
     }
 }

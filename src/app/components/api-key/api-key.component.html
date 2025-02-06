@@ -1,1 +1,21 @@
-<p>api-key works!</p>
+<div class="flex justify-start p-4">
+  <div class="card w-96 bg-base-200 shadow-xl p-6 text-black">
+    <h2 class="text-xl font-bold mb-4">Tu API Key</h2>
+
+    @if(apiKey) {
+      <div class="bg-gray-300 p-2 rounded text-sm overflow-auto w-full break-all flex items-center justify-between">
+        <span class="w-full select-all">{{ apiKey }}</span>
+        <button (click)="copiarApiKey(apiKey)" class="btn btn-sm bg-gray-400 ml-2">📋</button>
+      </div>
+      <button (click)="revokeApiKey()" class="btn btn-error mt-2 text-white">Revocar API Key</button>
+    } @else {
+      <p>No tienes una API Key generada.</p>
+      <button (click)="generarApiKey()" class="btn btn-primary mt-2 text-white">Generar API Key</button>
+    }
+
+    @if(message) {
+      <p class="message mt-4">{{ message }}</p>
+    }
+  </div>
+</div>
+

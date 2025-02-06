@@ -93,11 +93,13 @@ const login = async (req, res) => {
       });
     }
 
+    // Generar un token con toda la información necesaria
     const accessToken = jwt.sign(
       { 
         id_usuario: usuario.id_usuario, 
         nombre: usuario.nombre,
-        roles: usuario.roles 
+        roles: usuario.roles,
+        email: usuario.email
       }, 
       process.env.JWT_SECRET,
       { expiresIn: '2h' }
@@ -108,12 +110,12 @@ const login = async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 7200000
+      maxAge: 7200000 // 2 horas en milisegundos
     });
 
     res.status(200).json({
       code: 1,
-      message: 'Login OK',
+      message: 'Login exitoso',
       data: {
         usuario: {
           id_usuario: usuario.id_usuario,
@@ -129,11 +131,12 @@ const login = async (req, res) => {
     console.error('Error en login:', error);
     res.status(500).json({
       code: -100,
-      message: 'Ha ocurrido un error al iniciar sesión',
-      error: error
+      message: 'Error en el servidor',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 };
+
 const forgotPassword = async (req, res) => {
     try {
       const errors = validationResult(req);

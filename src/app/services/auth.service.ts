@@ -16,21 +16,42 @@ export class AuthService {
 
   actualizarUsuarioLogueado() {
     const usuario = this.obtenerUsuario();
+    console.log('Actualizando usuario logueado:', usuario);
     this.usuarioLogueado.next(usuario);
   }
 
   login(email: string, password: string): Observable<Access> {
     return this.http.post<Access>(`${this.apiURL}auth/login`, { email, password }, { withCredentials: true }).pipe(
-      tap(response => console.log('Login response:', response)),
-      map((response: Access) => {
-        const token = response.accessToken;
-        localStorage.setItem('token', token);
-        localStorage.setItem('usuario', JSON.stringify(response.data.usuario));
-        this.actualizarUsuarioLogueado();
-        return response;
+      tap(response => {
+        if (response && response.data) {
+          const token = response.data.accessToken;
+          const apiKey = response.data.apiKey;
+          if (token) {
+            localStorage.setItem('token', token);
+            if (apiKey) {
+              localStorage.setItem('apiKey', apiKey);
+            }
+            localStorage.setItem('usuario', JSON.stringify(response.data.usuario));
+            this.actualizarUsuarioLogueado();
+
+          } else {
+            console.warn('Respuesta del login no contiene el token esperado');
+          }
+        }
+      }),
+      catchError(error => {
+        console.error('Error en login:', error);
+        throw error;
       })
     );
   }
+
+  //Se recupera el token, sale en consola
+  getToken(): string | null {
+    const token = localStorage.getItem('token');
+    return token;
+  }
+  
 
   registro(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiURL}auth/registro`, data).pipe(
@@ -42,66 +63,43 @@ export class AuthService {
     );
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
   logout(): Observable<any> {
     return this.http.post<any>(`${this.apiURL}auth/logout`, {}, { withCredentials: true }).pipe(
-      map(() => {
+      tap(() => {
         localStorage.removeItem('token');
         localStorage.removeItem('usuario');
-        localStorage.removeItem('apiKey');
-        this.actualizarUsuarioLogueado();
+        this.usuarioLogueado.next(null);
       }),
-      catchError((error) => {
+      catchError(error => {
         localStorage.removeItem('token');
         localStorage.removeItem('usuario');
-        localStorage.removeItem('apiKey');
-        this.actualizarUsuarioLogueado();
-        throw error;     
+        this.usuarioLogueado.next(null);
+        throw error;
       })
     );
   }
-
-  obtenerApiKey(): Observable<any> {
-    return this.http.post<any>(`${this.apiURL}api/keys`, {}, { withCredentials: true }).pipe(
-      map(response => {
-        localStorage.setItem('apiKey', response.apiKey);
-        return response;
-      })
-    );
-  }
-
-  revocarApiKey(): Observable<any> {
-    const apiKey = localStorage.getItem('apiKey');
-    return this.http.delete<any>(`${this.apiURL}api/keys`, {
-      headers: { 'x-api-key': apiKey || '' }
-    }).pipe(
-      map(() => {
-        localStorage.removeItem('apiKey');
-      })
-    );
-  }
-
+  
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    const loggedIn = !!this.getToken();
+    console.log('¿Está logueado?:', loggedIn);
+    return loggedIn;
   }
  
   getApiKey() {
-    return localStorage.getItem('apiKey');
+    const apiKey = localStorage.getItem('apiKey');
+    console.log('API Key recuperada:', apiKey);
+    return apiKey;
   }
   
+  //Aqui se obtiene el usuario, en consola sale 
   obtenerUsuario(): any {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-        return usuario;
-      } catch {
-        return null;
-      }
+    const usuarioStr = localStorage.getItem('usuario');
+    try {
+      const usuario = usuarioStr ? JSON.parse(usuarioStr) : null;
+      return usuario;
+    } catch (error) {
+      console.error('Error al parsear usuario:', error);
+      return null;
     }
-    return null;
   }
 }

@@ -58,4 +58,3 @@ app.use('/api/v1', verificarApiKey, memeRutas); // API para desarrolladores
 app.listen(3000, () => {
   console.log(`Servidor de Express escuchando en el puerto 3000`);
 });
-

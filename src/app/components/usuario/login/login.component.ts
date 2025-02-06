@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Access } from '../../../interface/access';
 import { NotificacionesService } from '../../../services/notificaciones.service';
 import { ModalService } from '../../../services/modal.service';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -39,26 +40,25 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       this.errorMessage = null;
-
       const { email, password } = this.loginForm.value;
 
       this.authService.login(email, password).subscribe({
         next: (response: Access) => {
           console.log("Respuesta del servidor:", response);
 
-          if (response?.message === 'Login OK') {
-            this.guardarDatosUsuario(response);
-            
-            const esAdmin = response.data.usuario.roles?.includes('admin');
+          if (response?.code === 1 && response?.message === 'Login exitoso') {
+            // El login fue exitoso
+            const usuario = response.data.usuario;
+            const esAdmin = usuario.roles?.includes('admin');
             const rutaDestino = esAdmin ? 'admin' : 'perfil';
 
-            this.notificacionService.mostrarExito(`Hola ${response.data.usuario.nombre}`);
+            this.notificacionService.mostrarExito(`Hola ${usuario.nombre}`);
             this.router.navigate([rutaDestino]);
             this.closeModal();
             this.isLoggedIn = true;
           } else {
             this.errorMessage = 'Error al iniciar sesión. Por favor, intenta de nuevo.';
-          }  
+          }
         },
         error: (error) => {
           console.error("Error al iniciar sesión:", error);
@@ -67,12 +67,14 @@ export class LoginComponent {
       });
     }
   }
-
+  
   private guardarDatosUsuario(response: Access) {
-    const { accessToken, data: { usuario } } = response;
-
-    localStorage.setItem('token', accessToken);
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    const { data: { accessToken, usuario } } = response;
+    
+    if (accessToken) {
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('usuario', JSON.stringify(usuario));
+    }
   }
 
   closeModal() {
